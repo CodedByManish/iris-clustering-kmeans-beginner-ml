@@ -70,6 +70,8 @@ jupyter notebook
 - 🎓 Students learning Data Science
 - 💻 Anyone starting with Python ML projects
 
+---
+
 ## ❤️ A Small Note From Me
 
 I made this project for you guys —
@@ -80,11 +82,7 @@ to make Machine Learning easier and less confusing.
 -  🍴 Fork it and try your own experiments
 -  🤝 You are welcome to contribute & create pull requests
 
-👍
-
-## 📌 Keywords (SEO)
-
-*Machine Learning, KMeans, Clustering, Iris Dataset, Beginner ML Project, Data Science, Python, Scikit-learn, ML Tutorial, AI Basics*
+---
 
 ## 👨‍💻 Author
 
