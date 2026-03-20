@@ -22,9 +22,23 @@ I created this project especially for **beginners** who want to understand clust
 
 ## 📁 Project Structure
 ```text
-    ├── Clustering_iris.ipynb # Step-by-step ML tutorial
-    ├── requirements.txt # Required libraries
-    └── README.md # Project documentation
+iris-clustering-kmeans-beginner-ml/
+│
+├── Clustering_iris.ipynb
+├── README.md
+├── requirements.txt
+│
+├── images/
+│   ├── elbow_method.png
+│   └── clustering_result.png
+│
+└── steps/
+    ├── 01_imports.md
+    ├── 02_dataset.md
+    ├── 03_exploration.md
+    ├── 04_visualization.md
+    ├── 05_kmeans.md
+    └── 06_evaluation.md
 ```
 
 ---
