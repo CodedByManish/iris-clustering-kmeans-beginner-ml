@@ -1,6 +1,7 @@
 # 🌸 Iris Species Clustering: A Step-by-Step Guide
 
-This guide walks through the process of unsupervised learning using the **K-Means Clustering** algorithm on the famous Iris dataset.
+> This guide walks through the process of unsupervised learning using the **K-Means Clustering** algorithm on the famous Iris dataset.
+> You will learn how to explore data, visualize patterns, find optimal clusters, and evaluate model performance
 
 ---
 
@@ -9,15 +10,20 @@ This guide walks through the process of unsupervised learning using the **K-Mean
 2. [Load Dataset](#step-2-load-dataset)
 3. [Explore Data](#step-3-explore-data)
 4. [Data Visualization](#step-4-data-visualization)
-5. [K-Means & Elbow Method](#step-5-apply-k-means)
-6. [Model Evaluation](#step-6-evaluate-model)
+5. [feature-scaling](#step-5-feature-scaling)
+6. [Elbow Method](#-step-6-elbow-method)
+6. [Final Clustering & Evaluation](#step-7-final-clustering-&-evaluation)
 
 ---
 
-## 📦 Step 1: Import Libraries
+## 📦 `Step 1: Import Libraries`
+
+```md
 We begin by importing the necessary tools for data manipulation, visualization, and machine learning.
+```
 
 ```python
+# Import necessary libraries
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -26,138 +32,146 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 ```
 
-## Explaination
-- pandas (pd) → work with table data  
-- load_iris → get example dataset  
-- seaborn (sns) → make nice graphs  
-- matplotlib.pyplot (plt) → draw charts  
-- KMeans → group similar data  
-- silhouette_score → check grouping quality  
+### Explaination
+- pandas → data manipulation
+- seaborn & matplotlib → visualization
+- load_iris → dataset loader
+- KMeans → clustering algorithm
+- silhouette_score → evaluation metric
+- StandardScaler → feature scaling
 
 ---
 
-# 🟢 `Step 2: Load Dataset`
+## 🟢 `Step 2: Load Dataset`
 
-We load the built-in Iris dataset and convert it into a structured format for easier analysis.
 
----
+```md
+We load and prepare the dataset.
+```
 
-## 📌 Code
+### *Code :*
 
 ```python
-from sklearn.datasets import load_iris
-import pandas as pd
 
-# Load dataset
+# Load dataset and convert to DataFrame
 iris = load_iris()
-
-# Convert to DataFrame
 df = pd.DataFrame(iris.data, columns=iris.feature_names)
 
-# Add target column
-df['species'] = iris.target
+# Remove duplicates (if exist)
+df = df.drop_duplicates().reset_index(drop=True)
 
 # Preview dataset
 df.head()
 ```
-## 🖼️ Output Placeholder
 ---
 
-# 🟢 `Step 3: Explore Data`
+## 🟢 `Step 3: Explore Data`
 
 ```md
-
 We inspect and understand the dataset.
 ```
 
-## Code
+### *Code :*
 
 ```python
-# Show the keys in the Iris dataset
-print("Keys:", iris.keys())
+# Inspect dataset
 
-# Show target values (the species labels as numbers)
-print("\nTarget Values:", iris.target)
-
-# Show target names (species names)
-print("\nTarget Names:", iris.target_names)
-
-# Create a DataFrame for easier inspection
-df = pd.DataFrame(iris.data, columns=iris.feature_names)
-
-# Display the first 5 rows
-df.head()
+print(iris.target_names)   # target names
+df.info()                 # Dataset info
+df.describe()             # statistical summary
+df.isnull().sum()         # missing values check
 ```
-
-## Extra
-```python
-# Show basic info: column names, data types, missing values
-df.info()
-
-# Show statistical summary: mean, min, max, etc.
-df.describe()
-```
-
 
 ---
 
-# 🟢 `Step 4: Data Visualization
+# 🟢 `Step 4: Data Visualization`
 
 ```md
-
 We visualize relationships between features.
 ```
 
-## Code
+### *Code :*
 
 ```python
 sns.pairplot(df)
 plt.show()
 ```
-## 🖼️ Output Placeholder
+### 🖼️ Output
 
+![Feature Relationships](images/Feature_relationships.png)
 ---
 
-# 🟢 `Step 5: Apply K-Means`
+# 🟢 `Step 5: Feature Scaling`
 
 ```md
-
-We use the Elbow Method to find optimal clusters.
+We select important features and scale them for better clustering.
 ```
-## Code
+### *Code :*
 
 ```python
 X = df[['petal length (cm)', 'petal width (cm)']]
 
-error = []
-for i in range(1, 11):
-    kmeans = KMeans(n_clusters=i, init='k-means++', random_state=42)
-    kmeans.fit(X)
-    error.append(kmeans.inertia_)
-
-plt.plot(range(1, 11), error)
-plt.show()
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
 ```
-## 🖼️ Output Placeholder
+
 ---
 
-# 🟢 `Step 6: Evaluate Model`
+# 🟢 `Step 6: Elbow Method`
 
 ```md
-# 📏 
-
 We apply K-Means and evaluate performance.
 ```
-## Code
+### *Code :*
 
 ```python
-kmeans = KMeans(n_clusters=3, init='k-means++', random_state=42)
-y_predict = kmeans.fit_predict(X)
+error = []
 
-plt.scatter(X.iloc[:,0], X.iloc[:,1], c=y_predict)
+for i in range(1, 11):
+    kmeans = KMeans(n_clusters=i, init='k-means++', random_state=42, n_init=10)
+    kmeans.fit(X_scaled)
+    error.append(kmeans.inertia_)
+
+plt.figure(figsize=(8, 4))
+plt.plot(range(1, 11), error, marker='o', linestyle='--')
+plt.title("Elbow Method")
+plt.xlabel("Number of Clusters (k)")
+plt.ylabel("Inertia")
+plt.show()
+```
+
+### 🖼️ Output
+
+![Elbow Method](images/k-means_Elbow.png)
+---
+
+# 🟢 `Step 7: Final Clustering & Evaluation`
+
+```md
+We apply K-Means, visualize clusters, and evaluate performance.
+```
+### *Code :*
+
+```python
+# Train model
+kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
+y_pred = kmeans.fit_predict(X_scaled)
+
+# Plot clusters
+plt.scatter(X.iloc[:, 0], X.iloc[:, 1], c=y_pred, cmap='viridis')
+
+# Plot centroids
+centroids = scaler.inverse_transform(kmeans.cluster_centers_)
+plt.scatter(centroids[:, 0], centroids[:, 1], c='red', marker='*', s=200)
+
+plt.title("K-Means Clusters")
 plt.show()
 
-score = silhouette_score(X, y_predict)
-print("Silhouette Score:", score)
+# Evaluation
+print("Silhouette Score:", silhouette_score(X_scaled, y_pred))
 ```
-## 🖼️ Output Placeholder
+## 🖼️ Output :
+<div style="display: flex; gap: 10px; align-items: center;">
+  <img src="images/K-means_Clusters.png" width="56%" >
+  <img src="images/Cluster_Centroids.png" width="44%" >
+</div>
