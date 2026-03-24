@@ -142,7 +142,7 @@ plt.show()
 
 ### 🖼️ Output
 
-![Elbow Method](images/k-means_Elbow.png)
+![Elbow Method](images/K-Means_Elbow.png)
 ---
 
 # 🟢 `Step 7: Final Clustering & Evaluation`
@@ -172,6 +172,6 @@ print("Silhouette Score:", silhouette_score(X_scaled, y_pred))
 ```
 ## 🖼️ Output :
 <div style="display: flex; gap: 10px; align-items: center;">
-  <img src="images/K-means_Clusters.png" width="56%" >
-  <img src="images/Cluster_Centroids.png" width="44%" >
+  <img src="images/K-Means_Clusters.png" width="53%" >
+  <img src="images/Cluster_Centroids.png" width="40%" >
 </div>
